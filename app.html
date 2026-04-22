@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Pokémon Card Value Game</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background: linear-gradient(to right, #2a75bb, #ffcb05);
+        color: #222;
+        margin: 0;
+    }
+
+    .container {
+        margin-top: 80px;
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        width: 350px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    input {
+        padding: 10px;
+        width: 80%;
+        margin-top: 10px;
+    }
+
+    button {
+        padding: 10px 20px;
+        margin-top: 15px;
+        background: #2a75bb;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #1b4f8a;
+    }
+
+    .result {
+        margin-top: 20px;
+        font-weight: bold;
+    }
+
+    .nav {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+    }
+
+    .nav a {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="nav">
+    <a href="fromscratch.html">← Back to Scratch Page</a>
+</div>
+
+<div class="container">
+    <h1>Pokémon Card Value Game</h1>
+    <p>Guess the value of the card!</p>
+
+    <h2 id="cardName"></h2>
+
+    <input type="number" id="guess" placeholder="Enter price ($)">
+    <br>
+    <button onclick="checkGuess()">Submit Guess</button>
+
+    <div class="result" id="result"></div>
+    <div class="result" id="score"></div>
+
+    <button onclick="nextCard()">Next Card</button>
+</div>
+
+<script>
+const cards = [
+    { name: "Pikachu Illustrator", value: 5200000 },
+    { name: "Charizard 1st Edition PSA 10", value: 420000 },
+    { name: "Blastoise Prototype", value: 360000 },
+    { name: "Shadowless Charizard", value: 250000 },
+    { name: "Trophy Pikachu 1997", value: 300000 }
+];
+
+let currentCard = {};
+let score = 0;
+
+function nextCard() {
+    currentCard = cards[Math.floor(Math.random() * cards.length)];
+    document.getElementById("cardName").innerText = currentCard.name;
+    document.getElementById("result").innerText = "";
+    document.getElementById("guess").value = "";
+}
+
+function checkGuess() {
+    let guess = Number(document.getElementById("guess").value);
+    let actual = currentCard.value;
+
+    if (!guess) {
+        document.getElementById("result").innerText = "Enter a number!";
+        return;
+    }
+
+    let difference = Math.abs(guess - actual);
+
+    if (difference < actual * 0.1) {
+        score++;
+        document.getElementById("result").innerText =
+            "🔥 Very close! Actual value: $" + actual.toLocaleString();
+    } else if (guess > actual) {
+        document.getElementById("result").innerText =
+            "Too high! Actual value: $" + actual.toLocaleString();
+    } else {
+        document.getElementById("result").innerText =
+            "Too low! Actual value: $" + actual.toLocaleString();
+    }
+
+    document.getElementById("score").innerText = "Score: " + score;
+}
+
+// Start first card
+nextCard();
+</script>
+
+</body>
+</html>
